@@ -1,5 +1,8 @@
 import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, Typography } from "antd";
+
+const { Item } = Form;
+const { Text } = Typography;
 
 const SignUp = () => {
   const onFinish = (values) => {
@@ -29,7 +32,7 @@ const SignUp = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      <Form.Item
+      <Item
         label="Name"
         name="name"
         rules={[
@@ -40,9 +43,9 @@ const SignUp = () => {
         ]}
       >
         <Input />
-      </Form.Item>
+      </Item>
 
-      <Form.Item
+      <Item
         label="Email"
         name="email"
         rules={[
@@ -53,9 +56,9 @@ const SignUp = () => {
         ]}
       >
         <Input />
-      </Form.Item>
+      </Item>
 
-      <Form.Item
+      <Item
         label="Password"
         name="password"
         rules={[
@@ -66,9 +69,9 @@ const SignUp = () => {
         ]}
       >
         <Input.Password />
-      </Form.Item>
+      </Item>
 
-      <Form.Item
+      <Item
         name="remember"
         valuePropName="checked"
         wrapperCol={{
@@ -77,18 +80,21 @@ const SignUp = () => {
         }}
       >
         <Checkbox>Remember me</Checkbox>
-      </Form.Item>
+        <br /><br />
+        <Text type="secondary">Already have a account?</Text>
+        <Button type="link">Sign In</Button>
+      </Item>
 
-      <Form.Item
+      <Item
         wrapperCol={{
           offset: 8,
           span: 16,
         }}
       >
         <Button type="primary" htmlType="submit">
-          SignUp
+          Sign Up
         </Button>
-      </Form.Item>
+      </Item>
     </Form>
   );
 };
