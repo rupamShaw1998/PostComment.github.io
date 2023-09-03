@@ -1,5 +1,8 @@
 import React from "react";
 import { Avatar, Card, Input } from "antd";
+import { DeleteOutlined } from '@ant-design/icons';
+import "../styles/Home.css";
+import PostModal from "./PostModal";
 
 const { Meta } = Card;
 
@@ -39,39 +42,35 @@ const Home = () => {
   ];
 
   return (
-    <div>
-      <Card title="Iron Man">
+    <div style={{ width: 450 }}>
+      <PostModal />
+      <Card>
         <Meta
-            avatar={<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=3" />}
-            title="Iron Man"
-            description="dfjkdj djlf jkl ldfjkdfjk dlfjskldfjkdj kljr krj kl"
+          avatar={
+            <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=3" />
+          }
+          title="Iron Man"
+          description="dfjkdj djlf jkl ldfjkdfjk dlfjskldfjkdj kljr krj kl"
         />
-        <Card
-          type="inner"
-          extra={<a href="#">More</a>}
-        >
-          <Meta
-            avatar={<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1" />}
-            title="Captain America"
-            description="nice post"
-          />
-        </Card>
-        <Card
-          style={{
-            marginTop: 16,
-            marginBottom: 16
-          }}
-          type="inner"
-          title="Thor Odinson"
-          extra={<a href="#">More</a>}
-        >
-           <Meta
-            avatar={<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=2" />}
-            title="Thor odinson"
-            description="cool post"
-          />
-        </Card>
-        <Input />
+        {comments1.map((comment) => {
+          let SRC_URL = `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${comment.id}`;
+          return (
+            <Card
+              style={{
+                margin: "16px 0",
+              }}
+              type="inner"
+              actions={[<DeleteOutlined key="delete" />]}
+            >
+              <Meta
+                avatar={<Avatar src={SRC_URL} />}
+                title={comment.name}
+                description={comment.content}
+              />
+            </Card>
+          );
+        })}
+        <Input placeholder="Enter a comment :)" />
       </Card>
     </div>
   );
