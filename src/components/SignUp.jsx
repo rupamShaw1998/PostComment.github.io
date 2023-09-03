@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
+import { Link } from "react-router-dom";
 
 const { Item } = Form;
 const { Text } = Typography;
@@ -82,7 +83,9 @@ const SignUp = () => {
         <Checkbox>Remember me</Checkbox>
         <br /><br />
         <Text type="secondary">Already have a account?</Text>
-        <Button type="link">Sign In</Button>
+        <Link to={"/signIn"}>
+          <Button type="link">Sign In</Button>
+        </Link>
       </Item>
 
       <Item

@@ -50,7 +50,7 @@ const Home = () => {
             <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=3" />
           }
           title="Iron Man"
-          description="dfjkdj djlf jkl ldfjkdfjk dlfjskldfjkdj kljr krj kl"
+          description="My name is Tony Stark. This is my first post Avengers. Let's save the universe."
         />
         {comments1.map((comment) => {
           let SRC_URL = `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${comment.id}`;

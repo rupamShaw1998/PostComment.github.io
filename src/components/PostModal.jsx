@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Input, Modal } from "antd";
+
+const { TextArea } = Input;
 
 const PostModal = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [text, setText] = useState("");
 
   const handleOk = () => {
     setConfirmLoading(true);
@@ -20,9 +23,9 @@ const PostModal = () => {
 
   return (
     <>
-      <Button 
-        type="primary" 
-        onClick={() => setOpen(true)} 
+      <Button
+        type="primary"
+        onClick={() => setOpen(true)}
         style={{ margin: "10px" }}
       >
         Create
@@ -33,8 +36,28 @@ const PostModal = () => {
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            disabled={text? false : true}
+            loading={confirmLoading}
+            onClick={handleOk}
+          >
+            Post
+          </Button>,
+        ]}
       >
-        <p>{}</p>
+        <TextArea
+          rows={5}
+          placeholder="Write something..."
+          allowClear
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
       </Modal>
     </>
   );
