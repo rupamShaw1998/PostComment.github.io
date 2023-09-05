@@ -7,7 +7,7 @@ const { Meta } = Card;
 
 const Comments = ({ postId }) => {
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4OTU5ZWIzMmRmZGUxMmQxNzAwNWEiLCJlbWFpbCI6InN0ZXZlQGFiYy5jb20iLCJpYXQiOjE2OTMwNzc1MzB9.KuXvF1KrWIL1ItdYKLqFh5yv80JcQsZcEjXmzLeZ94k";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4OTU5ZWIzMmRmZGUxMmQxNzAwNWEiLCJlbWFpbCI6InN0ZXZlQGFiYy5jb20iLCJuYW1lIjoiQ2FwdGFpbiBBbWVyaWNhIiwiaWF0IjoxNjkzOTMwMzI1fQ.-RZUJOYEGN-nJjtFVK3kkDcm5KPT08SeaS_QRx7V3dM";
 
     const [postComments, setPostComments] = useState([]);
     const [users, setUsers] = useState([]);
@@ -21,7 +21,6 @@ const Comments = ({ postId }) => {
         try {
             const headers = {"Authorization": `Bearer ${token}`};
             const response = await axios.get(`http://localhost:5000/comment/get-comments/${postId}`, { headers });
-            console.log(response);
             setPostComments(response.data);
         } catch (err) {
             console.log(err);
@@ -49,7 +48,7 @@ const Comments = ({ postId }) => {
 
           return (
             <Card
-                key={comment._id}
+              key={comment._id}
               style={{
                 margin: "16px 0",
               }}

@@ -1,24 +1,35 @@
 import React, { useState } from "react";
 import { Button, Input, Modal } from "antd";
+import axios from "axios";
 
 const { TextArea } = Input;
 
-const PostModal = () => {
+const PostModal = ({ signedUser, updateUI }) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [text, setText] = useState("");
 
-  const handleOk = () => {
+  const handleCreatePost = () => {
     setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
+    createPost();
+    setConfirmLoading(false);
+    setOpen(false);
   };
 
   const handleCancel = () => {
     console.log("Clicked cancel button");
     setOpen(false);
+  };
+
+  const createPost = async () => {
+    try {
+      const body = { authorId: signedUser._id, content: text };
+      const response = await axios.post("http://localhost:5000/post/add", body);
+      updateUI(response.data);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -33,7 +44,7 @@ const PostModal = () => {
       <Modal
         title="Create a new post :)"
         open={open}
-        onOk={handleOk}
+        onOk={handleCreatePost}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         footer={[
@@ -45,7 +56,7 @@ const PostModal = () => {
             type="primary"
             disabled={text? false : true}
             loading={confirmLoading}
-            onClick={handleOk}
+            onClick={handleCreatePost}
           >
             Post
           </Button>,
