@@ -5,7 +5,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 
 const { Meta } = Card;
 
-const Comments = ({ postId }) => {
+const Comments = ({ postId, commentText }) => {
 
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4OTU5ZWIzMmRmZGUxMmQxNzAwNWEiLCJlbWFpbCI6InN0ZXZlQGFiYy5jb20iLCJuYW1lIjoiQ2FwdGFpbiBBbWVyaWNhIiwiaWF0IjoxNjkzOTMwMzI1fQ.-RZUJOYEGN-nJjtFVK3kkDcm5KPT08SeaS_QRx7V3dM";
 
@@ -13,8 +13,11 @@ const Comments = ({ postId }) => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        getCommentsByPost(postId);
-        getUsers();
+      getCommentsByPost(postId);
+    }, [commentText]);
+      
+    useEffect(() => {
+      getUsers();
     }, []);
 
     const getCommentsByPost = async (postId) => {
