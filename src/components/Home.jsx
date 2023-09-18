@@ -4,16 +4,19 @@ import PostModal from "./PostModal";
 import axios from "axios";
 import Comments from "./Comments";
 import "../styles/Home.css";
+import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
 const { Text, Title } = Typography;
 
-const Home = ({ authToken }) => {
+const Home = ({ authToken,  setAuthToken }) => {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [signedUser, setSignedUser] = useState({});
   const [commentText, setCommentText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPosts();
@@ -24,6 +27,11 @@ const Home = ({ authToken }) => {
   const updatePostsUI = (newPost) => {
     setPosts([...posts, newPost]);
   };
+
+  const signOutHandler = () => {
+    navigate("/signIn");
+    setAuthToken("");
+  }
 
   const getPosts = async () => {
     try {
@@ -76,9 +84,17 @@ const Home = ({ authToken }) => {
 
   return (
     <div style={{ width: 450 }}>
-      <Title level={4} italic style={{ color: "teal" }}>
-        Welcome, <span style={{ color: "aqua" }}>{signedUser.name}</span>
-      </Title>
+      <div style={{ display: "flex" }}>
+        <Title level={4} italic style={{ color: "teal" }}>
+          Welcome, <span style={{ color: "aqua" }}>{signedUser.name}</span>
+        </Title>
+        <Button 
+          onClick={signOutHandler} 
+          style={{ margin: "25px" }}
+        >
+          Sign Out
+        </Button>
+      </div>
       <PostModal signedUser={signedUser} updateUI={updatePostsUI} />
 
       {isLoading ? <Spin size="large" /> : null}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const { Item } = Form;
 const { Text } = Typography;
@@ -12,8 +13,8 @@ const SignUp = () => {
   const onFinish = async (values) => {
     try {
       const { name, email, password } = values;
-      console.log(values);
-      const authToken = await axios.post("https://rupam-social-media.onrender.com/user/register",  { name, email, password });
+      // console.log(values);
+      await axios.post("https://rupam-social-media.onrender.com/user/register",  { name, email, password });
       navigate("/signIn");
     } catch (err) {
       console.log(err);

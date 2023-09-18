@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route path="/signUp" element={<SignUp />}></Route>
         <Route path="/signIn" element={<SignIn setAuthToken={setAuthToken} />}></Route>
-        <Route path="/Home" element={<Home authToken={authToken} />}></Route>
+        <Route path="/Home" element={<Home authToken={authToken} setAuthToken={setAuthToken} />}></Route>
       </Routes>
     </BrowserRouter>
   );
