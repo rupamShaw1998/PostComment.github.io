@@ -16,6 +16,7 @@ function App() {
     <BrowserRouter>
       <Title level={2} style={{ color: "brown" }}>Post Comment Application</Title>
       <Routes>
+        <Route path='/' element={<SignIn setAuthToken={setAuthToken} />}></Route>
         <Route path="/signUp" element={<SignUp />}></Route>
         <Route path="/signIn" element={<SignIn setAuthToken={setAuthToken} />}></Route>
         <Route path="/Home" element={<Home authToken={authToken} setAuthToken={setAuthToken} />}></Route>
