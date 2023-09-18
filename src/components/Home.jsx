@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Card, Input } from "antd";
+import { Avatar, Button, Card, Input, Spin, Typography } from "antd";
 import PostModal from "./PostModal";
 import axios from "axios";
 import Comments from "./Comments";
 import "../styles/Home.css";
 
 const { Meta } = Card;
+const { Text, Title } = Typography;
 
-const Home = () => {
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU4OTU5ZWIzMmRmZGUxMmQxNzAwNWEiLCJlbWFpbCI6InN0ZXZlQGFiYy5jb20iLCJuYW1lIjoiQ2FwdGFpbiBBbWVyaWNhIiwiaWF0IjoxNjkzOTMwMzI1fQ.-RZUJOYEGN-nJjtFVK3kkDcm5KPT08SeaS_QRx7V3dM";
-
+const Home = ({ authToken }) => {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [signedUser, setSignedUser] = useState({});
   const [commentText, setCommentText] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getPosts();
     getUsers();
-  }, []);
+    setIsLoading(false);
+  }, [authToken]);
 
   const updatePostsUI = (newPost) => {
     setPosts([...posts, newPost]);
@@ -27,10 +27,13 @@ const Home = () => {
 
   const getPosts = async () => {
     try {
-      const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.get("http://localhost:5000/post/get-posts", {
-        headers,
-      });
+      const headers = { Authorization: `Bearer ${authToken}` };
+      const response = await axios.get(
+        "https://rupam-social-media.onrender.com/post/get-posts",
+        {
+          headers,
+        }
+      );
       setSignedUser(response.data.user);
       setPosts(response.data.posts);
     } catch (err) {
@@ -40,7 +43,9 @@ const Home = () => {
 
   const getUsers = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/user/get-users`);
+      const response = await axios.get(
+        `https://rupam-social-media.onrender.com/user/get-users`
+      );
       setUsers(response.data);
     } catch (err) {
       console.log(err);
@@ -55,11 +60,10 @@ const Home = () => {
         text: commentText,
       };
       const response = await axios.post(
-        "http://localhost:5000/comment/add",
+        "https://rupam-social-media.onrender.com/comment/add",
         body
       );
       setCommentText("");
-      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -72,8 +76,12 @@ const Home = () => {
 
   return (
     <div style={{ width: 450 }}>
-      <h2>Welcome {signedUser.name}</h2>
+      <Title level={4} italic style={{ color: "teal" }}>
+        Welcome, <span style={{ color: "aqua" }}>{signedUser.name}</span>
+      </Title>
       <PostModal signedUser={signedUser} updateUI={updatePostsUI} />
+
+      {isLoading ? <Spin size="large" /> : null}
 
       {posts.map((post) => (
         <Card key={post._id} style={{ margin: "20px 0" }}>
@@ -84,16 +92,20 @@ const Home = () => {
             title={getUserName(post.authorId)}
             description={post.content}
           />
-          <Comments postId={post._id} commentText={commentText} />
+          <Comments
+            postId={post._id}
+            commentText={commentText}
+            authToken={authToken}
+          />
           <div style={{ display: "flex", gap: "5px", marginTop: "10px" }}>
             <Input
-              placeholder="Enter a comment :)"
+              placeholder="Enter a comment 😃"
               // value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
             />
-            <Button 
-              type="dashed" 
-              disabled={commentText? false : true}
+            <Button
+              type="dashed"
+              disabled={commentText ? false : true}
               onClick={() => addComment(post._id)}
             >
               Comment

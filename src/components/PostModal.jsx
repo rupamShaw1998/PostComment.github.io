@@ -24,9 +24,8 @@ const PostModal = ({ signedUser, updateUI }) => {
   const createPost = async () => {
     try {
       const body = { authorId: signedUser._id, content: text };
-      const response = await axios.post("http://localhost:5000/post/add", body);
+      const response = await axios.post("https://rupam-social-media.onrender.com/post/add", body);
       updateUI(response.data);
-      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -64,7 +63,7 @@ const PostModal = ({ signedUser, updateUI }) => {
       >
         <TextArea
           rows={5}
-          placeholder="Write something..."
+          placeholder="Write something...🤔"
           allowClear
           value={text}
           onChange={(e) => setText(e.target.value)}

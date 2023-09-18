@@ -1,13 +1,24 @@
 import React from "react";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const { Item } = Form;
 const { Text } = Typography;
 
-const SignIn = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+const SignIn = ({ setAuthToken }) => {
+
+  const navigate = useNavigate();
+
+  const onFinish = async (values) => {
+    try {
+      const { email, password } = values;
+      const response = await axios.post("https://rupam-social-media.onrender.com/user/login",  { email, password });
+      setAuthToken(response.data.accessToken);
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
