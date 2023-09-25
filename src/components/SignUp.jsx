@@ -13,7 +13,6 @@ const SignUp = () => {
   const onFinish = async (values) => {
     try {
       const { name, email, password } = values;
-      // console.log(values);
       await axios.post("https://rupam-social-media.onrender.com/user/register",  { name, email, password });
       navigate("/signIn");
     } catch (err) {

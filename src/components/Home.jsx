@@ -7,9 +7,9 @@ import "../styles/Home.css";
 import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
-const Home = ({ authToken,  setAuthToken }) => {
+const Home = () => {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [signedUser, setSignedUser] = useState({});
@@ -17,12 +17,13 @@ const Home = ({ authToken,  setAuthToken }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
+  const authToken = localStorage.getItem("AccessToken");
 
   useEffect(() => {
     getPosts();
     getUsers();
     setIsLoading(false);
-  }, [authToken]);
+  }, []);
 
   const updatePostsUI = (newPost) => {
     setPosts([...posts, newPost]);
@@ -30,8 +31,8 @@ const Home = ({ authToken,  setAuthToken }) => {
 
   const signOutHandler = () => {
     navigate("/signIn");
-    setAuthToken("");
-  }
+    localStorage.removeItem("AccessToken");
+  };
 
   const getPosts = async () => {
     try {
@@ -67,7 +68,7 @@ const Home = ({ authToken,  setAuthToken }) => {
         postId: postId,
         text: commentText,
       };
-      const response = await axios.post(
+      await axios.post(
         "https://rupam-social-media.onrender.com/comment/add",
         body
       );
@@ -116,7 +117,6 @@ const Home = ({ authToken,  setAuthToken }) => {
           <div style={{ display: "flex", gap: "5px", marginTop: "10px" }}>
             <Input
               placeholder="Enter a comment 😃"
-              // value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
             />
             <Button

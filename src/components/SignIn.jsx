@@ -6,7 +6,7 @@ import axios from "axios";
 const { Item } = Form;
 const { Text } = Typography;
 
-const SignIn = ({ setAuthToken }) => {
+const SignIn = () => {
 
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const SignIn = ({ setAuthToken }) => {
     try {
       const { email, password } = values;
       const response = await axios.post("https://rupam-social-media.onrender.com/user/login",  { email, password });
-      setAuthToken(response.data.accessToken);
+      localStorage.setItem("AccessToken", response.data.accessToken);
       navigate("/home");
     } catch (err) {
       console.log(err);
