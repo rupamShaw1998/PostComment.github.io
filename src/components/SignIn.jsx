@@ -15,9 +15,15 @@ const SignIn = () => {
       const { email, password } = values;
       const response = await axios.post("https://rupam-social-media.onrender.com/user/login",  { email, password });
       localStorage.setItem("AccessToken", response.data.accessToken);
+      alert("✅ You're successfully logged in :)");
       navigate("/home");
     } catch (err) {
-      console.log(err);
+      if(err.response.data === "user doesn't exists") {
+        alert("Oops! this email address doesn't exist. 😢 \nPlease enter correct email address or Register by clicking the Sign Up button.");
+      }
+      if(err.response.data === "wrong password!") {
+        alert("Oops! Password incorrect. 😢 \nPlease enter correct password.");
+      }
     }
   };
 

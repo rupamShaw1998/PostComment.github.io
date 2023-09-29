@@ -3,7 +3,7 @@ import './App.css';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
 import SignIn from './components/SignIn';
-import { Alert, Typography } from 'antd';
+import { Typography } from 'antd';
 import { useEffect } from 'react';
 
 const { Title } = Typography;
@@ -19,13 +19,7 @@ function App() {
 
   const handleBackButton = (event) => {
     if (window.location.pathname === '/home') {
-      <Alert
-        message="Warning"
-        description="You're logged out. Please Sign In to continue."
-        type="warning"
-        showIcon
-        closable
-      />
+      alert("You're logged out. Please sign in to continue.");
       window.location.href = "/signIn";
       window.history.pushState(null, '', '/home');
     }
