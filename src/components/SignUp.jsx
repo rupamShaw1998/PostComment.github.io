@@ -14,6 +14,7 @@ const SignUp = () => {
     try {
       const { name, email, password } = values;
       await axios.post("https://rupam-social-media.onrender.com/user/register",  { name, email, password });
+      alert("✅ You're successfully registered :)");
       navigate("/signIn");
     } catch (err) {
       console.log(err);
