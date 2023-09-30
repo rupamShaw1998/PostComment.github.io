@@ -5,14 +5,14 @@ import { DeleteOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
 
-const Comments = ({ postId, commentText, authToken }) => {
+const Comment = ({ postId, commentText, authToken }) => {
   
   const [postComments, setPostComments] = useState([]);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     getCommentsByPost(postId);
-  }, [commentText]);
+  }, [postComments]);
 
   useEffect(() => {
     getUsers();
@@ -25,6 +25,7 @@ const Comments = ({ postId, commentText, authToken }) => {
         `https://rupam-social-media.onrender.com/comment/get-comments/${postId}`,
         { headers }
       );
+      console.log("called");
       setPostComments(response.data);
     } catch (err) {
       console.log(err);
@@ -47,6 +48,15 @@ const Comments = ({ postId, commentText, authToken }) => {
     return user?.name;
   };
 
+  const deleteComment = async (id) => {
+    try {
+      await axios.delete(`https://rupam-social-media.onrender.com/comment/remove/${id}`);
+      setPostComments(prevComments => prevComments.filter(comment => comment._id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       {postComments.map((comment, id) => {
@@ -59,7 +69,7 @@ const Comments = ({ postId, commentText, authToken }) => {
               margin: "16px 0",
             }}
             type="inner"
-            actions={[<DeleteOutlined key="delete" />]}
+            actions={[<DeleteOutlined key="delete" onClick={() => deleteComment(comment._id)} />]}
           >
             <Meta
               avatar={<Avatar src={SRC_URL} />}
@@ -73,4 +83,4 @@ const Comments = ({ postId, commentText, authToken }) => {
   );
 };
 
-export default Comments;
+export default Comment;

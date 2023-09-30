@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -7,10 +7,12 @@ const { Item } = Form;
 const { Text } = Typography;
 
 const SignIn = () => {
-
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const onFinish = async (values) => {
+    setIsLoading(true);
     try {
       const { email, password } = values;
       const response = await axios.post("https://rupam-social-media.onrender.com/user/login",  { email, password });
@@ -99,7 +101,7 @@ const SignIn = () => {
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={isLoading}>
           Sign In
         </Button>
       </Item>

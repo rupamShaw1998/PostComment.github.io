@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Button, Card, Input, Spin, Typography } from "antd";
 import PostModal from "./PostModal";
 import axios from "axios";
-import Comments from "./Comments";
+import Comment from "./Comment";
 import "../styles/Home.css";
 import { useNavigate } from "react-router-dom";
 
@@ -22,9 +22,8 @@ const Home = () => {
   useEffect(() => {
     getPosts();
     getUsers();
-    setIsLoading(false);
   }, []);
-
+  
   const updatePostsUI = (newPost) => {
     setPosts([...posts, newPost]);
   };
@@ -43,6 +42,7 @@ const Home = () => {
           headers,
         }
       );
+      setIsLoading(false);
       setSignedUser(response.data.user);
       setPosts(response.data.posts);
     } catch (err) {
@@ -97,19 +97,20 @@ const Home = () => {
         </Button>
       </div>
       <PostModal signedUser={signedUser} updateUI={updatePostsUI} />
+      <br />
 
       {isLoading ? <Spin size="large" /> : null}
 
-      {posts.map((post) => (
+      {posts.map((post, id) => (
         <Card key={post._id} style={{ margin: "20px 0" }}>
           <Meta
             avatar={
-              <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=3" />
+              <Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${id}`} />
             }
             title={getUserName(post.authorId)}
             description={post.content}
           />
-          <Comments
+          <Comment
             postId={post._id}
             commentText={commentText}
             authToken={authToken}
