@@ -1,18 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Avatar, Card } from "antd";
+import { Avatar,Button, Card, Input } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
 
-const Comment = ({ postId, commentText, authToken }) => {
+const Comment = ({ postId, authToken, signedUser }) => {
   
   const [postComments, setPostComments] = useState([]);
   const [users, setUsers] = useState([]);
+  const [commentText, setCommentText] = useState("");
 
   useEffect(() => {
     getCommentsByPost(postId);
-  }, [postComments]);
+  }, [commentText]);
 
   useEffect(() => {
     getUsers();
@@ -27,6 +28,23 @@ const Comment = ({ postId, commentText, authToken }) => {
       );
       console.log("called");
       setPostComments(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addComment = async (postId) => {
+    try {
+      const body = {
+        authorId: signedUser._id,
+        postId: postId,
+        text: commentText,
+      };
+      await axios.post(
+        "https://rupam-social-media.onrender.com/comment/add",
+        body
+      );
+      setCommentText("");
     } catch (err) {
       console.log(err);
     }
@@ -51,7 +69,7 @@ const Comment = ({ postId, commentText, authToken }) => {
   const deleteComment = async (id) => {
     try {
       await axios.delete(`https://rupam-social-media.onrender.com/comment/remove/${id}`);
-      setPostComments(prevComments => prevComments.filter(comment => comment._id !== id));
+      getCommentsByPost(postId);
     } catch (err) {
       console.log(err);
     }
@@ -79,6 +97,20 @@ const Comment = ({ postId, commentText, authToken }) => {
           </Card>
         );
       })}
+      <div style={{ display: "flex", gap: "5px", marginTop: "10px" }}>
+        <Input
+          placeholder="Enter a comment 😃"
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+        />
+        <Button
+          type="dashed"
+          disabled={!commentText}
+          onClick={() => addComment(postId)}
+        >
+          Comment
+        </Button>
+      </div>
     </>
   );
 };

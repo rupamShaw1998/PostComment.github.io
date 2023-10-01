@@ -13,7 +13,6 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [signedUser, setSignedUser] = useState({});
-  const [commentText, setCommentText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -61,23 +60,6 @@ const Home = () => {
     }
   };
 
-  const addComment = async (postId) => {
-    try {
-      const body = {
-        authorId: signedUser._id,
-        postId: postId,
-        text: commentText,
-      };
-      await axios.post(
-        "https://rupam-social-media.onrender.com/comment/add",
-        body
-      );
-      setCommentText("");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const getUserName = (id) => {
     const user = users?.find((user) => id === user._id);
     return user?.name;
@@ -112,22 +94,9 @@ const Home = () => {
           />
           <Comment
             postId={post._id}
-            commentText={commentText}
             authToken={authToken}
+            signedUser={signedUser}
           />
-          <div style={{ display: "flex", gap: "5px", marginTop: "10px" }}>
-            <Input
-              placeholder="Enter a comment 😃"
-              onChange={(e) => setCommentText(e.target.value)}
-            />
-            <Button
-              type="dashed"
-              disabled={commentText ? false : true}
-              onClick={() => addComment(post._id)}
-            >
-              Comment
-            </Button>
-          </div>
         </Card>
       ))}
     </div>
