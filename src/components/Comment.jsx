@@ -1,16 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Avatar,Button, Card, Input } from "antd";
+import { Avatar, Button, Card, Input, Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
+import UpdateCommentModal from "./UpdateCommentModal";
 
 const { Meta } = Card;
+const { Text } = Typography;
 
 const Comment = ({ postId, authToken, signedUser }) => {
   
-  const [postComments, setPostComments] = useState([]);
+  const [comments, setComments] = useState([]);
   const [users, setUsers] = useState([]);
   const [commentText, setCommentText] = useState("");
-
+  
   useEffect(() => {
     getCommentsByPost(postId);
   }, [commentText]);
@@ -26,8 +28,7 @@ const Comment = ({ postId, authToken, signedUser }) => {
         `https://rupam-social-media.onrender.com/comment/get-comments/${postId}`,
         { headers }
       );
-      console.log("called");
-      setPostComments(response.data);
+      setComments(response.data);
     } catch (err) {
       console.log(err);
     }
@@ -75,9 +76,11 @@ const Comment = ({ postId, authToken, signedUser }) => {
     }
   };
 
+
+
   return (
     <>
-      {postComments.map((comment, id) => {
+      {comments.map((comment, id) => {
         let SRC_URL = `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${id}`;
 
         return (
@@ -87,12 +90,19 @@ const Comment = ({ postId, authToken, signedUser }) => {
               margin: "16px 0",
             }}
             type="inner"
-            actions={[<DeleteOutlined key="delete" onClick={() => deleteComment(comment._id)} />]}
+            actions={[
+              comment.authorId === signedUser._id? 
+                <DeleteOutlined key="delete" onClick={() => deleteComment(comment._id)} />
+                : null,
+              comment.authorId === signedUser._id?
+                <UpdateCommentModal commentId={comment._id} defaultValue={comment.text} />
+                : null
+            ]}
           >
             <Meta
               avatar={<Avatar src={SRC_URL} />}
               title={getUserName(comment.authorId)}
-              description={comment.text}
+              description={<Text color="#200533">{comment.text}</Text>}
             />
           </Card>
         );

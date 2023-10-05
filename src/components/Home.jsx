@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, Card, Input, Spin, Typography } from "antd";
+import { Avatar, Button, Card, Spin, Typography } from "antd";
 import PostModal from "./PostModal";
 import axios from "axios";
 import Comment from "./Comment";
@@ -7,7 +7,7 @@ import "../styles/Home.css";
 import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
-const { Title } = Typography;
+const { Text, Title } = Typography;
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -90,7 +90,7 @@ const Home = () => {
               <Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${id}`} />
             }
             title={getUserName(post.authorId)}
-            description={post.content}
+            description={<Text color="#200533">{post.content}</Text>}
           />
           <Comment
             postId={post._id}
