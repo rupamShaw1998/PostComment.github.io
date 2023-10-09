@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Checkbox, Form, Input, Typography } from "antd";
+import { Button, Checkbox, Form, Input, Typography, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -10,6 +10,7 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
+  // const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = async (values) => {
     setIsLoading(true);
@@ -26,6 +27,8 @@ const SignIn = () => {
       if(err.response.data === "wrong password!") {
         alert("Oops! Password incorrect. 😢 \nPlease enter correct password.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 

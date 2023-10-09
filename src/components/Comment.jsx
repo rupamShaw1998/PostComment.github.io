@@ -21,6 +21,13 @@ const Comment = ({ postId, authToken, signedUser }) => {
     getUsers();
   }, []);
 
+  const updateCommentsUI = (updatedComment) => {
+    setComments((prev) => {
+      let updatedUI = prev?.filter((ele) => ele._id !== updatedComment._id);
+      return [...updatedUI, updatedComment];
+    });
+  };
+
   const getCommentsByPost = async (postId) => {
     try {
       const headers = { Authorization: `Bearer ${authToken}` };
@@ -77,7 +84,6 @@ const Comment = ({ postId, authToken, signedUser }) => {
   };
 
 
-
   return (
     <>
       {comments.map((comment, id) => {
@@ -95,7 +101,11 @@ const Comment = ({ postId, authToken, signedUser }) => {
                 <DeleteOutlined key="delete" onClick={() => deleteComment(comment._id)} />
                 : null,
               comment.authorId === signedUser._id?
-                <UpdateCommentModal commentId={comment._id} defaultValue={comment.text} />
+                <UpdateCommentModal 
+                  commentId={comment._id} 
+                  defaultValue={comment.text}
+                  updateCommentsUI={updateCommentsUI}
+                />
                 : null
             ]}
           >

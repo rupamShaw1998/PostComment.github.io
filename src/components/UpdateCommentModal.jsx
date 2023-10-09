@@ -5,15 +5,15 @@ import { EditOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
-const UpdateCommentModal = ({ commentId, defaultValue }) => {
+const UpdateCommentModal = ({ commentId, defaultValue, updateCommentsUI }) => {
 
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [updateText, setUpdateText] = useState("");
 
-  const handleEditComment = (commentId) => {
+  const handleEditComment = async (commentId) => {
     setConfirmLoading(true);
-    editComment(commentId);
+    await editComment(commentId);
     setConfirmLoading(false);
   };
 
@@ -24,7 +24,8 @@ const UpdateCommentModal = ({ commentId, defaultValue }) => {
 
   const editComment = async (commentId) => {
     try {
-      await axios.patch(`https://rupam-social-media.onrender.com/comment/update/${commentId}`, {text: updateText});
+      const response = await axios.patch(`https://rupam-social-media.onrender.com/comment/update/${commentId}`, {text: updateText});
+      updateCommentsUI(response.data);
       setOpen(false);
     } catch (err) {
       console.log(err);
